@@ -1,0 +1,19 @@
+# ======================
+# Python
+# ======================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.egg
+.ipynb_checkpoints
+*.log
+.vscode/
+*.tar
+docker-compose.override.yml
+ollama_data/
+ollama_models/
+.DS_Store
+Thumbs.db

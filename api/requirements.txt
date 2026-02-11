@@ -1,0 +1,12 @@
+litestar
+uvicorn
+langchain
+langchain-classic
+langchain-community
+psycopg2-binary
+pandas
+pdfplumber
+pypdf
+beautifulsoup4
+requests
+ollama
