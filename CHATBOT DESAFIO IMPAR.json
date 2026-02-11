@@ -1,0 +1,204 @@
+{
+  "name": "CHATBOT DESAFIO - IMPAR",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": " Sou um assistente de IA corporativo pronto para te responder.",
+        "options": {
+          "allowFileUploads": true,
+          "showWelcomeScreen": true,
+          "subtitle": "Estou pronto para responder suas duvidas!",
+          "title": "Olá",
+          "responseMode": "responseNodes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -432,
+        192
+      ],
+      "id": "f0dd8073-6a23-4e1d-904c-a0d628500713",
+      "name": "When chat message received",
+      "webhookId": "76f8d7b3-9f71-4399-a6b0-8bf679b37335"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/chat",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data0"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.chatInput }}"
+            },
+            {
+              "name": "user_id",
+              "value": "={{ $json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0194f020-f55b-4bd2-8ee6-f3bcb0af7258",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7ce8d178-1133-45d0-8fbd-60e896b34cf3",
+              "leftValue": "={{ $binary.data0 ? true : false }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -224,
+        192
+      ],
+      "id": "30f4806d-057f-44ea-9188-5563085137b2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/chat",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.chatInput }}"
+            },
+            {
+              "name": "user_id",
+              "value": "={{ $json.sessionId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        0,
+        368
+      ],
+      "id": "dcc0a5ee-824f-4ccb-bcbe-a64c20749b42",
+      "name": "HTTP Request - no File Data"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        144
+      ],
+      "id": "a617f8dd-ce30-4043-8369-57e22fa0f3d6",
+      "name": "Chat",
+      "webhookId": "c6298f8c-a574-493b-9d0d-91ac801921b5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request - no File Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - no File Data": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "35684b01-790e-448c-9030-cbf608666a60",
+  "meta": {
+    "instanceId": "97cd294281689eda8288bbb2f0c00add7930cccc22b2c9d9c0f90ce6f30d17db"
+  },
+  "id": "24UNYXW2fWppJLVCOTxwQ",
+  "tags": []
+}
