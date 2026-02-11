@@ -73,7 +73,6 @@ Memória de curto prazo por usuário, permitindo contexto independente
     - rag_service.py
     - memory_service.py
     - embedding_service.py
-    - file_service.py
   - database/
     - postgres.py
   - app.py
