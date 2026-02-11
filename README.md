@@ -22,11 +22,11 @@ Requisição HTTP
       ↓
 API Python (Litestar)
       ↓
-├── Embeddings (Ollama local)
-├── PGVector (PostgreSQL)
-├── Recuperação RAG
-├── Memória da Conversa
-└── Resposta via LLM (Ollama)
+- Embeddings (Ollama local)
+- PGVector (PostgreSQL)
+- Recuperação RAG
+- Memória da Conversa
+- Resposta via LLM (Ollama)
 
 
 Serviços:
